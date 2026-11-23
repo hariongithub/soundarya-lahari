@@ -253,6 +253,7 @@ mark { background: color-mix(in srgb, var(--gold) 35%, transparent); color: inhe
 .stb{margin:8px 0 0;font-size:.78rem;color:var(--muted)} .stb.review{color:#b4540a} .stb.good{color:#2f6b4f}
 .picker select{font:inherit;padding:6px 10px;border:1px solid var(--rule);border-radius:8px;background:transparent;color:inherit;margin:0 6px}
 .picker{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.stb.ok{color:#8a6d00}.srcs{margin:14px 0;font-size:.9rem}.srcs summary{cursor:pointer;color:var(--muted)}.srcs ul{margin:8px 0;padding-left:20px}.srcs a{color:inherit}.legend2{color:var(--muted);font-size:.82rem}
 </style>
 </head>
 <body>
@@ -291,6 +292,16 @@ mark { background: color-mix(in srgb, var(--gold) 35%, transparent); color: inhe
     <button type="button" class="pzbtn" id="pzToggle" aria-pressed="true" title="Show a gold mark at the pause after syllable 6">Pause marks</button>
   </div>
 
+  <details class="srcs" id="srcs">
+    <summary>Sources and how sure each verse is</summary>
+    <ul>
+      <li>Verses 1 to 5: Telugu copied from a printed Telugu edition with commentary.</li>
+      <li>Verses 6 to 100: Telugu ebook text, compared against these scans on archive.org:
+        <a href="https://archive.org/details/xvvc-soundarya-lahari-shankaracharya-sanskrit-in-devana" target="_blank" rel="noopener">Devanagari edition, Sri Vani Vilas Press, Srirangam</a>,
+        <a href="https://archive.org/details/bramham_official_Soundaryalahari_2" target="_blank" rel="noopener">Telugu scan (Soundaryalahari 2)</a>.</li>
+    </ul>
+    <p class="legend2"><span class="stb good">●</span> sources agree &nbsp; <span class="stb ok">◐</span> chosen by metre or scan, worth a check &nbsp; <span class="stb review">○</span> needs proofreading. Verses without a note beside them are the first kind.</p>
+  </details>
   <main id="main"></main>
 
   <footer>
@@ -325,7 +336,7 @@ function fmt(sec) { return Math.floor(sec / 60) + ":" + String(sec % 60).padStar
 function linkFor(id) { const t = state.times[id]; return t != null ? YT + "&t=" + t + "s" : null; }
 
 const BADGE = { book: ["good", "Checked against a printed book"], good: ["good", "Two ebook sources agree"], ok: ["ok", "Chosen by metre or scan; please proofread"], review: ["review", "Needs proofreading against a book"] };
-function badge(v) { const b = BADGE[v.st]; return b ? `<p class="stb ${b[0]}"><span aria-hidden="true">${b[0] === "good" ? "●" : b[0] === "ok" ? "◐" : "○"}</span> ${b[1]}</p>` : ""; }
+function badge(v) { const b = BADGE[v.st]; if (!b) return ""; const g = b[0] === "good" ? "●" : b[0] === "ok" ? "◐" : "○"; return b[0] === "good" ? `<p class="stb good" title="${b[1]}"><span aria-label="${b[1]}">${g}</span></p>` : `<p class="stb ${b[0]}"><span aria-hidden="true">${g}</span> ${b[1]}</p>`; }
 function renderRead() {
   let html = "", group = "";
   const practice = isPractice();
